@@ -712,20 +712,49 @@ function AmbientAudioToggle({ src }: { src: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [playing, setPlaying] = useState(true)
 
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.volume = 0.45
+    const attemptPlay = () => {
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false))
+    }
+    attemptPlay()
+
+    const resumeOnInteraction = () => {
+      if (audio.paused) attemptPlay()
+      window.removeEventListener('pointerdown', resumeOnInteraction)
+      window.removeEventListener('keydown', resumeOnInteraction)
+    }
+    window.addEventListener('pointerdown', resumeOnInteraction)
+    window.addEventListener('keydown', resumeOnInteraction)
+
+    return () => {
+      window.removeEventListener('pointerdown', resumeOnInteraction)
+      window.removeEventListener('keydown', resumeOnInteraction)
+    }
+  }, [])
+
   function toggle() {
     if (!audioRef.current) return
     if (playing) {
       audioRef.current.pause()
+      setPlaying(false)
     } else {
-      audioRef.current.volume = 0.35
-      audioRef.current.play().catch(() => {})
+      audioRef.current.volume = 0.45
+      audioRef.current
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => {})
     }
-    setPlaying(!playing)
   }
 
   return (
     <div className="fixed bottom-6 right-6 z-[70]">
-      <audio ref={audioRef} src={src} loop />
+      <audio ref={audioRef} src={src} loop autoPlay />
       <motion.button
         onClick={toggle}
         whileTap={{ scale: 0.9 }}
