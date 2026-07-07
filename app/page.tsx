@@ -1058,7 +1058,7 @@ function StratumSection({
             <div className="absolute inset-x-0 top-0 h-px bg-white/16" />
             <div className="relative">
               <p className="font-mono text-[0.72rem] uppercase tracking-[0.34em] text-[#43B3AE]">
-                {stratum.stratum} // Full Screen Layer
+                {stratum.stratum}
               </p>
               <p className="mt-4 font-mono text-[0.72rem] uppercase tracking-[0.28em] text-[#B85D3D]">
                 {stratum.label}
