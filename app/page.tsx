@@ -710,7 +710,7 @@ function RingReveal({ show }: { show: boolean }) {
 
 function AmbientAudioToggle({ src }: { src: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [playing, setPlaying] = useState(false)
+  const [playing, setPlaying] = useState(true)
 
   function toggle() {
     if (!audioRef.current) return
